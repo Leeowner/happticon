@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Loadable from "react-imported-component";
 import Loading from "loading/Loading";
-import { Route } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
+import client from "./apolloClient";
+import { ApolloProvider } from "react-apollo";
 // 헤더
 const Header = Loadable(() => import("components/main/Header"), {
   LoadingComponent: Loading
@@ -22,12 +24,16 @@ const Home = Loadable(() => import("pages/home/Home"), {
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/register" component={RegisterPage} />
-      </div>
+      <ApolloProvider client={client}>
+        <Router>
+          <div className="App">
+            <Header />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
+          </div>
+        </Router>
+      </ApolloProvider>
     );
   }
 }
